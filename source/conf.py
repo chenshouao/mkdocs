@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'CSA BLOG'
+project = 'Shouao'
 copyright = '2021, CSA'
 author = 'CSA'
 
