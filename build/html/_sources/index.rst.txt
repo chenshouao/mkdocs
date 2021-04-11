@@ -9,7 +9,8 @@ Welcome to CSA BLOG's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+   
+   pages/study
 
 
 Indices and tables
