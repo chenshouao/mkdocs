@@ -6,16 +6,10 @@
 Welcome to CSA BLOG's documentation!
 ====================================
 
+Contents:
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-   
+
    pages/study
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
