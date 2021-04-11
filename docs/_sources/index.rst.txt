@@ -3,13 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to CSA BLOG's documentation!
+Busying living. Trying harder.
 ====================================
 
-Contents:
 
 .. toctree::
    :maxdepth: 2
 
-   pages/study
-
+   pages/test
