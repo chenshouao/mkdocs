@@ -11,3 +11,4 @@ Busying living. Trying harder.
    :maxdepth: 2
 
    pages/test
+   pages/Codeforces
