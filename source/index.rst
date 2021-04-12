@@ -10,6 +10,5 @@ Busying living. Trying harder.
 .. toctree::
    :maxdepth: 2
 
-   pages/test
    pages/Codeforces
    pages/DataBase
