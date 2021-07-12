@@ -1,4 +1,4 @@
-算法模板们
+算法模板
 ====================================
 
 
@@ -7,4 +7,5 @@
 
    Algorithm/字符串
    Algorithm/数据结构
-   Algorithm/其他
+   Algorithm/图论
+   Algorithm/数学

@@ -41,8 +41,7 @@ namespace AC {
             q.pop();
             for (int i = 0; i < 26; i++) {
                 if (tr[u][i]) {
-                    fail[tr[u][i]] = tr[fail[u]][i];
-                    q.push(tr[u][i]);
+                    fail[tr[u][i]] = tr[fail[u]][i], q.push(tr[u][i]);
                 } else {
                     tr[u][i] = tr[fail[u]][i];
                 }
@@ -80,7 +79,9 @@ int main() {
         int x = AC::query(t);
         printf("%d\n", x);
         for (int i = 1; i <= n; i++) {
-            if (AC::cnt[i] == x) printf("%s\n", s[i] + 1);
+            if (AC::cnt[i] == x) {
+                printf("%s\n", s[i] + 1);
+            }
         }
     }
     return 0;
