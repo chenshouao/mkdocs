@@ -5,4 +5,7 @@
 .. toctree::
    :maxdepth: 2
 
-   
+   graph/dijkstra.md
+   graph/spfa.md
+   graph/prim.md
+   graph/lca.md

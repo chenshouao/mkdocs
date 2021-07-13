@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Busying living. Trying harder.
+东隅已逝  桑林非晚                  shouao@ccnu
 ====================================
 
 
@@ -11,5 +11,5 @@ Busying living. Trying harder.
    :maxdepth: 2
 
    pages/Algorithm
-   pages/Codeforces
-   pages/DataBase
+   pages/solution
+   pages/other
