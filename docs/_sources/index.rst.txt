@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-东隅已逝  桑林非晚                  shouao@ccnu
+Shouao's technique blog——I wanna Fly! 
 ====================================
 
 
