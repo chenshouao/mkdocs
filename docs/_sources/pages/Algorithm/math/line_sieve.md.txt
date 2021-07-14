@@ -6,16 +6,16 @@
 namespace sieve {
     int cnt;
     int pri[1000005];
-    int nxt[1000005];
+    int nxt[1000005];//每个数最小的因数
     bool vis[1000005];
     void init() {
-        for (int i = 2; i < MAXN; ++i) {
+        for (int i = 2; i < 1000005; ++i) {
             if (!vis[i]) {
                 pri[cnt++] = i;
                 nxt[i] = i;
             }
             for (int j = 0; j < cnt; ++j) {
-                if (1ll * i * pri[j] >= MAXN) break;
+                if (1ll * i * pri[j] >= 1000005) break;
                 vis[i * pri[j]] = 1;
                 nxt[i * pri[j]] = pri[j];
                 if (i % pri[j] == 0) {
