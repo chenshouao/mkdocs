@@ -5,6 +5,7 @@
 .. toctree::
    :maxdepth: 2
 
+   ds/dsu.md
    ds/zhuxishu.md
 
    
