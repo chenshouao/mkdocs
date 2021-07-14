@@ -10,7 +10,6 @@
 .. toctree::
    :maxdepth: 2
 
-   pages/my.md
    pages/Algorithm
    pages/solution
    pages/other

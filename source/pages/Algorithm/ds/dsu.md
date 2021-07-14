@@ -10,7 +10,7 @@ namespace dsu{
     void init() {
         for (int i = 1; i <= n; ++i) {
             fa[i] = i;
-        	sz[i] = 1;
+            sz[i] = 1;
         }
     }
     int Find(int x) {
