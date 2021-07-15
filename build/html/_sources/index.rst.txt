@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Shouao's technique blog——I wanna Fly! 
+Shouao's technique blog
 ====================================
 
 

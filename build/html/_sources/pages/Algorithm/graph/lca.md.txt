@@ -9,13 +9,13 @@ namespace LCA{
     int fa[500005][20];
 
     vector<int>G[500005];
-    inline void init() {
+    inline void init() {//@1 调用顺序
         for(int i = 2; i <= 500000; i++){
             lg[i] = lg[i>>1] + 1; //预处理log数组，用浮点数log可能会出错！
         }
     }
 
-    inline void add(int u, int v) { //@1 调用顺序
+    inline void add(int u, int v) {
         G[u].push_back(v);
     }
 
