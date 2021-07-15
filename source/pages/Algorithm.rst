@@ -9,3 +9,4 @@
    Algorithm/数据结构
    Algorithm/图论
    Algorithm/数学
+   Algorithm/其他
