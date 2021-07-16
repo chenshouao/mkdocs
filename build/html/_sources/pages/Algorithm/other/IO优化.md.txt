@@ -1,6 +1,6 @@
 # 快速IO
 
-读入数据为1e6以上时优化明显。
+数据IO规模为1e6以上时优化明显。
 
 ```cpp
 namespace IO {
@@ -15,5 +15,5 @@ namespace IO {
         for (; isdigit(c); c = getchar()) x = (x << 1) + (x << 3) + (c ^ 48);
         x *= f;
     }
-};
+}
 ```

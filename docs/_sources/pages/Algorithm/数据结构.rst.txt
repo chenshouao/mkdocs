@@ -6,6 +6,7 @@
    :maxdepth: 2
 
    ds/dsu.md
+   ds/SegmentTree.md
    ds/dynamicTree.md
    ds/zhuxishu.md
    
