@@ -1,4 +1,4 @@
-# tarjan求割点
+# Tarjan求割点
 
 ```cpp
 //求割点

@@ -8,6 +8,7 @@
    ds/dsu.md
    ds/SegmentTree.md
    ds/01trie.md
+   ds/norm_Mo.md
    ds/dynamicTree.md
    ds/zhuxishu.md
    
