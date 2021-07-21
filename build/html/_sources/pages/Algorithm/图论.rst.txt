@@ -10,3 +10,4 @@
    graph/prim.md
    graph/lca.md
    graph/tree_diameter.md
+   graph/tarjan.md

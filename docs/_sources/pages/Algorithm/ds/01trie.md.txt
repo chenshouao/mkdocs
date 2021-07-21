@@ -4,7 +4,7 @@
 
 ```cpp
 namespace Trie {
-    int nodenum;
+    int nodenum = 0;
     int num[35];
     int val[35];
     struct node{
@@ -14,7 +14,6 @@ namespace Trie {
     }trie[10000005];//(100MB)
 
     void init() {
-        nodenum = min(3000000, nodenum);
         for (int i = 0; i <= nodenum; ++i) {
             trie[i].val = trie[i].num = trie[i].next[0] = trie[i].next[1] = 0;
         }

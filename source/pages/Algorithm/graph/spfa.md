@@ -3,20 +3,19 @@
 处理负权图的最短路算法。最坏复杂度 O(nm)​，但在一般图上复杂度​O(cn)​ (c是一个很小的常数)。
 
 ```cpp
+int n,m,s;
+struct edge{
+    int v;
+    int dis;
+}temp;
+vector<edge>G[300005];
+inline void add(int u, int v, int w) {
+    G[u].push_back({v, w});
+}
 namespace SPFA{
-    struct edge{
-        int v;
-        int dis;
-    }temp;
-    int n,m,s;
     int dist[300005];
     int vis[300005]; // 是否在队列中
     int num[300005];
-    vector<edge>G[300005];
-
-    inline void add(int u, int v, int w) {
-        G[u].push_back({v, w});
-    }
 
     int spfa(int s){
         for (int i = 1; i <= n; ++i) {
@@ -40,7 +39,7 @@ namespace SPFA{
                         vis[e.v] = 1;
                         num[e.v]++;
                         if(num[e.v] > n){
-                            return 0; // negetive circle appear!
+                            return 0; // negative circle appear!
                         }
                     }
                 }
