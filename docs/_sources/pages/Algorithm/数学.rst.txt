@@ -6,4 +6,5 @@
    :maxdepth: 2
 
    math/line_sieve.md
+   math/sphere_intersection.md
    
