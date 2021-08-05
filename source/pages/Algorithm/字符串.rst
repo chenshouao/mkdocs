@@ -4,5 +4,6 @@
 
 .. toctree::
    :maxdepth: 2
-
+   
+   string/KMP.md
    string/AC.md

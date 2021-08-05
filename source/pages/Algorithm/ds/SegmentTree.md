@@ -3,17 +3,20 @@
 ### 维护区间和。
 
 ```cpp
+#define ls i<<1
+#define rs i<<1|1
 namespace Sgt{
+    ll a[1000005];
     struct node{
-        int l, r;
-        int val;
-        int lazy;
-    }tree[1000005];
+        int l, r; // 该节点代表的区间端点
+        ll sum;
+        ll lazy;
+    }tree[4000005];
     void push_up(int i) {
-        tree[i].val = max(tree[ls].val, tree[rs].val);
+        tree[i].sum = tree[ls].sum + tree[rs].sum;
     }
     void apply(int i, int val) {
-        tree[i].val += val;
+        tree[i].sum += (tree[i].r - tree[i].l + 1) * val;
         tree[i].lazy += val;
     }
     void push_down(int i) {
@@ -26,14 +29,26 @@ namespace Sgt{
         tree[i].l = l;
         tree[i].r = r;
         tree[i].lazy = 0;
-        tree[i].val = 0;
         if (l == r) {
+            tree[i].sum = a[l];
             return;
         }
-        int mid = (l + r)>>1;
-        build(ls, l, mid);
-        build(rs, mid + 1, r);
+        int mid = (l + r) / 2;
+        build(i * 2, l, mid);
+        build(i * 2 + 1, mid + 1, r);
+        push_up(i);
     }
+    ll query(int i, int l, int r) {
+        if (tree[i].l > r || tree[i].r < l) {
+            return 0;//无影响值
+        }
+        if (tree[i].l >= l && tree[i].r <= r) {
+            return tree[i].sum;
+        }
+        push_down(i);
+        return query(i * 2, l, r) + query(i * 2 + 1, l, r);
+    }
+
     void update(int i, int l, int r, int val) {
         if (tree[i].l > r || tree[i].r < l) {
             return;
@@ -43,19 +58,9 @@ namespace Sgt{
             return;
         }
         push_down(i);
-        update(ls, l, r, val);
-        update(rs, l, r, val);
+        update(i * 2, l, r, val);
+        update(i * 2 + 1, l, r, val);
         push_up(i);
-    }
-    int query(int i, int l, int r) {
-        if (tree[i].l > r || tree[i].r < l) {
-            return 0;
-        }
-        if (tree[i].l >= l && tree[i].r <= r) {
-            return tree[i].val;
-        }
-        push_down(i);
-        return max(query(ls, l, r), query(rs, l, r));
     }
 }
 ```
@@ -63,6 +68,8 @@ namespace Sgt{
 ### 维护区间最小值、最小值出现次数。
 
 ```cpp
+#define ls i<<1
+#define rs i<<1|1
 namespace Sgt{
     struct node {
         int l,r;
