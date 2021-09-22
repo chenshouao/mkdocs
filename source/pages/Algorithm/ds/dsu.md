@@ -14,7 +14,7 @@ namespace dsu{
         }
     }
     int Find(int x) {
-        return fa[x] == x?x:Find(fa[x]);
+        return fa[x] == x?x:fa[x] = Find(fa[x]);
     }
     void Union(int x, int y) {
         int fx = Find(x);

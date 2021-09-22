@@ -2,49 +2,68 @@
 
 主席树思想，可以做到不离散化作1e9内数的权值线段树。
 
-一. 查询区间和
+一. 查询区间和，区间更新，带lazytag。
 
 ```cpp
 namespace DT{
     int root, tot;
     struct node{
         int ls, rs;
-        int val;
+        int val, lazy;
     }tree[1000005];//两倍
-
+    int build() {
+        ++tot;
+        tree[tot].ls = tree[tot].rs = tree[tot].val = tree[tot].lazy = 0;
+        return tot;
+    }
+    void init() {
+        tot = 0;
+        root = build();
+    }
+    void apply(int i, int val, int l, int r) {
+        tree[i].val += val * (r - l + 1);
+        tree[i].lazy += val;
+    }
     void push_up(int i) {
         int ls = tree[i].ls;
         int rs = tree[i].rs;
         tree[i].val = tree[ls].val + tree[rs].val;
     }
-
-    int build() {
-        ++tot;
-        tree[tot].ls = tree[tot].rs = tree[tot].val = 0;
-        return tot;
+    void push_down(int i, int l, int r) {
+        if (!tree[i].ls) {
+            tree[i].ls = build();
+        }
+        if (!tree[i].rs) {
+            tree[i].rs = build();
+        }
+        int ls = tree[i].ls;
+        int rs = tree[i].rs;
+        int mid = (l + r)>>1;
+        apply(ls, tree[i].lazy, l, mid);
+        apply(rs, tree[i].lazy, mid + 1, r);
+        tree[i].lazy = 0;
     }
-
-    void init() {
-        tot = 0;
-        root = build();
-    }
-
-    void update(int i, int l, int r, int p, int val) {
-        if (l == r) {
-            tree[i].val += val;
+    void update(int i, int l, int r, int L, int R, int val) {
+        if (l > R || r < L) {
             return;
         }
+        if (l >= L && r <= R) {
+            apply(i, val, l, r);
+            return;
+        }
+        push_down(i, l, r);
         int mid = (l + r)>>1;
-        if (p <= mid) {
+        if (L <= mid) {
             if (!tree[i].ls) {
                 tree[i].ls = build();
             }
-            update(tree[i].ls, l, mid, p, val);
-        } else {
+            update(tree[i].ls, l, mid, L, R, val);
+        }
+        if (R > mid) {
             if (!tree[i].rs) {
                 tree[i].rs = build();
             }
-            update(tree[i].rs, mid + 1, r, p, val);
+            update(tree[i].rs, mid + 1, r, L, R, val);
         }
         push_up(i);
     }
@@ -55,6 +74,7 @@ namespace DT{
         if (l >= L && r <= R) {
             return tree[i].val;
         }
+        push_down(i, l, r);
         int mid = (l + r)>>1;
         int res = 0;
         if (tree[i].ls) {
