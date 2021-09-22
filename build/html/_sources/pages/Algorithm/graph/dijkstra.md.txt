@@ -5,15 +5,14 @@
 数据较弱时去掉 vis 数组的操作可能通过带负权的图，不过退化为了类 SPFA​ 算法。
 
 ```cpp
+struct edge{
+    int v;
+    long long w;
+};
+vector<edge>G[300005];
+long long dist[300005];
+int vis[300005];
 namespace Dij{
-    long long dist[300005];
-    int vis[300005];
-    
-    struct edge{
-        int v;
-        long long w;
-    };
-    vector<edge>G[300005];
     struct node{
         int v;
         long long w;

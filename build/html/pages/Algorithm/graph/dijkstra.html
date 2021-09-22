@@ -180,15 +180,14 @@
 <h1>Dijkstra 算法<a class="headerlink" href="#dijkstra" title="永久链接至标题">¶</a></h1>
 <p>最稳定的最短路算法，复杂度 O((n + m)log(n))​ 。注意：不能处理带负权图！</p>
 <p>数据较弱时去掉 vis 数组的操作可能通过带负权的图，不过退化为了类 SPFA​ 算法。</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">Dij</span><span class="p">{</span>
-    <span class="kt">long</span> <span class="kt">long</span> <span class="n">dist</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
-    <span class="kt">int</span> <span class="n">vis</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
-    
-    <span class="k">struct</span> <span class="nc">edge</span><span class="p">{</span>
-        <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
-        <span class="kt">long</span> <span class="kt">long</span> <span class="n">w</span><span class="p">;</span>
-    <span class="p">};</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="n">edge</span><span class="o">&gt;</span><span class="n">G</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">edge</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">w</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">edge</span><span class="o">&gt;</span><span class="n">G</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">dist</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">vis</span><span class="p">[</span><span class="mi">300005</span><span class="p">];</span>
+<span class="k">namespace</span> <span class="n">Dij</span><span class="p">{</span>
     <span class="k">struct</span> <span class="nc">node</span><span class="p">{</span>
         <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
         <span class="kt">long</span> <span class="kt">long</span> <span class="n">w</span><span class="p">;</span>

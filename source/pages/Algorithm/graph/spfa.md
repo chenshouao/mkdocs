@@ -9,14 +9,13 @@ struct edge{
     int dis;
 }temp;
 vector<edge>G[300005];
+int dist[300005];
+int vis[300005]; // 是否在队列中
+int num[300005];
 inline void add(int u, int v, int w) {
     G[u].push_back({v, w});
 }
 namespace SPFA{
-    int dist[300005];
-    int vis[300005]; // 是否在队列中
-    int num[300005];
-
     int spfa(int s){
         for (int i = 1; i <= n; ++i) {
             dist[i] = 2147483647;

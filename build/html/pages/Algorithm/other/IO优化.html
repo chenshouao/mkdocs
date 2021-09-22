@@ -92,7 +92,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../%E5%9B%BE%E8%AE%BA.html">图论</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E5%AD%A6.html">数学</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../%E5%85%B6%E4%BB%96.html">其他</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">快速IO</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">快速IO</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#oi">1.OI选手喜欢用，但是优化效果不怎么样的版本</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#neal-wu">2.Neal.Wu用的逆天版本，效率极高</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -173,6 +177,8 @@
   <div class="section" id="io">
 <h1>快速IO<a class="headerlink" href="#io" title="永久链接至标题">¶</a></h1>
 <p>数据IO规模为1e6以上时优化明显。</p>
+<div class="section" id="oi">
+<h2>1.OI选手喜欢用，但是优化效果不怎么样的版本<a class="headerlink" href="#oi" title="永久链接至标题">¶</a></h2>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">IO</span> <span class="p">{</span>
     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
     <span class="kr">inline</span> <span class="kt">void</span> <span class="n">w</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">)</span> <span class="n">w</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">10</span><span class="p">);</span> <span class="n">putchar</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">48</span><span class="p">);</span> <span class="p">}</span>
@@ -187,6 +193,250 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="neal-wu">
+<h2>2.Neal.Wu用的逆天版本，效率极高<a class="headerlink" href="#neal-wu" title="永久链接至标题">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/***</span>
+<span class="cm">date : 2021-09-22</span>
+<span class="cm">author : csa</span>
+<span class="cm">***/</span>
+<span class="cp">#include</span><span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">ll</span><span class="p">;</span>
+<span class="k">namespace</span> <span class="n">IO</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">15</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="n">input_buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+    <span class="kt">size_t</span> <span class="n">input_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">input_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="n">output_buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">output_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="n">number_buffer</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+    <span class="kt">uint8_t</span> <span class="n">lookup</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+
+    <span class="kt">void</span> <span class="nf">_update_input_buffer</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">input_len</span> <span class="o">=</span> <span class="n">fread</span><span class="p">(</span><span class="n">input_buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">),</span> <span class="n">BUFFER_SIZE</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+        <span class="n">input_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">input_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">input_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">EOF</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">char</span> <span class="n">next_char</span><span class="p">(</span><span class="kt">bool</span> <span class="n">advance</span> <span class="o">=</span> <span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">input_pos</span> <span class="o">&gt;=</span> <span class="n">input_len</span><span class="p">)</span>
+            <span class="n">_update_input_buffer</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="n">input_buffer</span><span class="p">[</span><span class="n">advance</span> <span class="o">?</span> <span class="n">input_pos</span><span class="o">++</span> <span class="o">:</span> <span class="n">input_pos</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isspace</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="sc">&#39;\t&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="o">|</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">input_finished</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">isspace</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="n">input_len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">next_char</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="n">input_len</span> <span class="o">&lt;</span> <span class="n">BUFFER_SIZE</span> <span class="o">&amp;&amp;</span> <span class="n">input_pos</span> <span class="o">&gt;=</span> <span class="n">input_len</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_char</span><span class="p">(</span><span class="kt">char</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">isspace</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)))</span>
+            <span class="n">next_char</span><span class="p">();</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="n">next_char</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_int</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">negative</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">isdigit</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">next_char</span><span class="p">()</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span><span class="p">)</span>
+                <span class="n">negative</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">number</span> <span class="o">+</span> <span class="p">(</span><span class="n">next_char</span><span class="p">()</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)));</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">negative</span><span class="p">)</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="n">number</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_int</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">number</span><span class="p">,</span> <span class="n">Args</span> <span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">read_int</span><span class="p">(</span><span class="n">number</span><span class="p">);</span>
+        <span class="n">read_int</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_double</span><span class="p">(</span><span class="kt">double</span> <span class="o">&amp;</span><span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">negative</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">isdigit</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">next_char</span><span class="p">()</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span><span class="p">)</span>
+                <span class="n">negative</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">number</span> <span class="o">+</span> <span class="p">(</span><span class="n">next_char</span><span class="p">()</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)));</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;.&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">next_char</span><span class="p">();</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="kt">double</span> <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span> <span class="n">isdigit</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">));</span> <span class="n">multiplier</span> <span class="o">*=</span> <span class="mf">0.1</span><span class="p">)</span>
+                <span class="n">number</span> <span class="o">+=</span> <span class="n">multiplier</span> <span class="o">*</span> <span class="p">(</span><span class="n">next_char</span><span class="p">()</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">negative</span><span class="p">)</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="n">number</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_str</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">isspace</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)))</span>
+            <span class="n">next_char</span><span class="p">();</span>
+
+        <span class="n">str</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="n">str</span> <span class="o">+=</span> <span class="n">next_char</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">isspace</span><span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)));</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read_line</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+            <span class="n">next_char</span><span class="p">();</span>
+
+        <span class="n">str</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="n">str</span> <span class="o">+=</span> <span class="n">next_char</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">next_char</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">_flush_output</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">fwrite</span><span class="p">(</span><span class="n">output_buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">),</span> <span class="n">output_pos</span><span class="p">,</span> <span class="n">stdout</span><span class="p">);</span>
+        <span class="n">output_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">write_char</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">output_pos</span> <span class="o">==</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span>
+            <span class="n">_flush_output</span><span class="p">();</span>
+
+        <span class="n">output_buffer</span><span class="p">[</span><span class="n">output_pos</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">write_int</span><span class="p">(</span><span class="n">T</span> <span class="n">number</span><span class="p">,</span> <span class="kt">char</span> <span class="n">after</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="sc">&#39;-&#39;</span><span class="p">);</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="n">number</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">number</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="n">lookup_value</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="n">number</span> <span class="o">%</span> <span class="mi">100</span><span class="p">];</span>
+            <span class="n">number</span> <span class="o">/=</span> <span class="mi">100</span><span class="p">;</span>
+            <span class="n">number_buffer</span><span class="p">[</span><span class="n">length</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="kt">char</span><span class="p">((</span><span class="n">lookup_value</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+            <span class="n">number_buffer</span><span class="p">[</span><span class="n">length</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="kt">char</span><span class="p">((</span><span class="n">lookup_value</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="kt">char</span><span class="p">(</span><span class="n">number</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">));</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="n">number_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">after</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="n">after</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">write_str</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">after</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">str</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">after</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="n">after</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">write_double</span><span class="p">(</span><span class="kt">double</span> <span class="n">number</span><span class="p">,</span> <span class="kt">char</span> <span class="n">after</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">places</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="sc">&#39;-&#39;</span><span class="p">);</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="n">number</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">assert</span><span class="p">(</span><span class="n">number</span> <span class="o">&lt;=</span> <span class="mf">9e18</span><span class="p">);</span>
+
+        <span class="c1">// Round up the number according to places.</span>
+        <span class="n">number</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">places</span><span class="p">);</span>
+        <span class="kt">int64_t</span> <span class="n">floored</span> <span class="o">=</span> <span class="kt">int64_t</span><span class="p">(</span><span class="n">number</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">floored</span> <span class="o">&lt;=</span> <span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">())</span>
+            <span class="n">write_int</span><span class="p">(</span><span class="kt">int</span><span class="p">(</span><span class="n">floored</span><span class="p">));</span>
+        <span class="k">else</span>
+            <span class="nf">write_int</span><span class="p">(</span><span class="n">floored</span><span class="p">);</span>
+
+        <span class="n">number</span> <span class="o">-=</span> <span class="kt">double</span><span class="p">(</span><span class="n">floored</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">number</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">places</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="sc">&#39;.&#39;</span><span class="p">);</span>
+
+            <span class="k">while</span> <span class="p">(</span><span class="n">places</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">number</span> <span class="o">*=</span> <span class="mi">100</span><span class="p">;</span>
+                <span class="kt">int</span> <span class="n">two</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">number</span><span class="p">);</span>
+                <span class="n">number</span> <span class="o">-=</span> <span class="n">two</span><span class="p">;</span>
+                <span class="kt">uint8_t</span> <span class="n">lookup_value</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="n">two</span><span class="p">];</span>
+                <span class="n">write_char</span><span class="p">(</span><span class="kt">char</span><span class="p">((</span><span class="n">lookup_value</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">));</span>
+                <span class="n">write_char</span><span class="p">(</span><span class="kt">char</span><span class="p">((</span><span class="n">lookup_value</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">));</span>
+                <span class="n">places</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">places</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">number</span> <span class="o">*=</span> <span class="mi">10</span><span class="p">;</span>
+                <span class="kt">int</span> <span class="n">one</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">number</span><span class="p">);</span>
+                <span class="n">write_char</span><span class="p">(</span><span class="kt">char</span><span class="p">(</span><span class="n">one</span> <span class="o">+</span> <span class="sc">&#39;0&#39;</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">after</span><span class="p">)</span>
+            <span class="n">write_char</span><span class="p">(</span><span class="n">after</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Ensures that _flush_output() is called at the end of the program.</span>
+        <span class="kt">bool</span> <span class="n">exit_success</span> <span class="o">=</span> <span class="n">atexit</span><span class="p">(</span><span class="n">_flush_output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">assert</span><span class="p">(</span><span class="n">exit_success</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">lookup</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kt">uint8_t</span><span class="p">((</span><span class="n">i</span> <span class="o">/</span> <span class="mi">10</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">IO</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/***</span>
+<span class="cm">    1.必须调用init()</span>
+<span class="cm">    2.自测的时候必须输入ctrl + z模拟文件尾</span>
+<span class="cm">    3.字符串仅支持string类</span>
+<span class="cm">    ***/</span>
+    <span class="n">init</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">read_int</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">write_int</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>
+    <span class="n">read_double</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">write_double</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="sc">&#39;\n&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 

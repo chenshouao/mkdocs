@@ -4,21 +4,18 @@
 
 ```cpp
 vector<int>G[500005];
+int lg[500005];
+int dep[500005];
+int fa[500005][20];
 namespace LCA{
-    int lg[500005];
-    int dep[500005];
-    int fa[500005][20];
-
     inline void init() {//@1 
         for(int i = 2; i <= 500000; i++){
             lg[i] = lg[i>>1] + 1; //预处理log数组，用浮点数log可能会出错！
         }
     }
-
     inline void add(int u, int v) {
         G[u].push_back(v);
     }
-
     void dfs(int cur,int Fa){ //@2
         fa[cur][0] = Fa;
         dep[cur] = dep[Fa] + 1;
