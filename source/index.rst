@@ -11,5 +11,3 @@ Shouao's technique blog
    :maxdepth: 2
 
    pages/Algorithm
-   pages/solution
-   pages/other

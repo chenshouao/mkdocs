@@ -5,6 +5,7 @@
 .. toctree::
    :maxdepth: 2
 
+   math/ternary_search.md
    math/line_sieve.md
    math/sphere_intersection.md
    math/CircleCrossArea.md

@@ -12,3 +12,5 @@
    graph/lca.md
    graph/tree_diameter.md
    graph/tarjan.md
+   graph/scc.md
+   graph/KM.md
