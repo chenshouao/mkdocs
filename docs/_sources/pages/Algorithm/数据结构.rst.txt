@@ -7,6 +7,7 @@
 
    ds/dsu.md
    ds/SegmentTree.md
+   ds/optimize.md
    ds/scanline.md
    ds/SegmentTreeBeats.md
    ds/01trie.md

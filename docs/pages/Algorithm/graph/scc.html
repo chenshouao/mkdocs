@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>求有向图的强连通分量 &mdash; Shouao 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="KM求二分图最大权完美匹配" href="KM.html" />
+    <link rel="prev" title="Tarjan求割点" href="tarjan.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Shouao
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../Algorithm.html">算法模板</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../%E5%AD%97%E7%AC%A6%E4%B8%B2.html">字符串</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html">数据结构</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../%E5%9B%BE%E8%AE%BA.html">图论</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dijkstra.html">Dijkstra 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spfa.html">SPFA​ 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prim.html">Prim 算法求最小生成树</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hungary.html">匈牙利算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lca.html">倍增法求 LCA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree_diameter.html">求树的直径</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tarjan.html">Tarjan求割点</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">求有向图的强连通分量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KM.html">KM求二分图最大权完美匹配</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E5%AD%A6.html">数学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E5%85%B6%E4%BB%96.html">其他</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Shouao</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../Algorithm.html">算法模板</a> &raquo;</li>
+        
+          <li><a href="../%E5%9B%BE%E8%AE%BA.html">图论</a> &raquo;</li>
+        
+      <li>求有向图的强连通分量</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/pages/Algorithm/graph/scc.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>求有向图的强连通分量<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">300005</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">dfn</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">dfncnt</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">in_stack</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">tp</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">scc</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">sc</span><span class="p">;</span>  <span class="c1">// 结点 i 所在 scc 的编号</span>
+<span class="kt">int</span> <span class="n">sz</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>       <span class="c1">// 强连通 i 的大小</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">G</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+<span class="kt">void</span> <span class="nf">tarjan</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="o">++</span><span class="n">dfncnt</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="o">++</span><span class="n">tp</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">in_stack</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dfn</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span>
+      <span class="n">tarjan</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+      <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">in_stack</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span>
+      <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">dfn</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="p">{</span>
+    <span class="o">++</span><span class="n">sc</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">tp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">u</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">scc</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">tp</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sc</span><span class="p">;</span>
+      <span class="n">sz</span><span class="p">[</span><span class="n">sc</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+      <span class="n">in_stack</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">tp</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="o">--</span><span class="n">tp</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">scc</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">tp</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sc</span><span class="p">;</span>
+    <span class="n">sz</span><span class="p">[</span><span class="n">sc</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">in_stack</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">tp</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="o">--</span><span class="n">tp</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="KM.html" class="btn btn-neutral float-right" title="KM求二分图最大权完美匹配" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tarjan.html" class="btn btn-neutral float-left" title="Tarjan求割点" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2021, CSA.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
