@@ -9,4 +9,4 @@
    math/line_sieve.md
    math/sphere_intersection.md
    math/CircleCrossArea.md
-   
+   math/inversion.md

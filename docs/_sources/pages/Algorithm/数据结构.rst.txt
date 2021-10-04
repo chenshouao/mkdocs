@@ -6,6 +6,7 @@
    :maxdepth: 2
 
    ds/dsu.md
+   ds/sparse_table.md
    ds/SegmentTree.md
    ds/optimize.md
    ds/scanline.md
@@ -15,6 +16,6 @@
    ds/norm_Mo.md
    ds/dynamicTree.md
    ds/zhuxishu.md
-   
+   ds/two_dimension_BIT.md
 
    

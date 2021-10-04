@@ -8,6 +8,7 @@
    graph/dijkstra.md
    graph/spfa.md
    graph/prim.md
+   graph/steiner.md
    graph/hungary.md
    graph/lca.md
    graph/tree_diameter.md
