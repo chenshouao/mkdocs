@@ -12,6 +12,7 @@
    graph/hungary.md
    graph/lca.md
    graph/tree_diameter.md
+   graph/dsu_on_tree.md
    graph/tarjan.md
    graph/scc.md
    graph/KM.md

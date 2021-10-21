@@ -34,24 +34,24 @@ int main () {
 	memset(dp,0x3f,sizeof(dp));
 	int n, m, k; scanf("%d%d%d",&n,&m,&k);
 	for (int i = 1; i <= m; i++) {
-		int u, v, w; scanf("%d%d%d", &u, &v, &w);
-		add_edge(u, v, w);
+	    int u, v, w; scanf("%d%d%d", &u, &v, &w);
+	    add_edge(u, v, w);
         add_edge(v, u, w);
 	}
 	for (int i = 1; i <= k; i++) {
-		scanf("%d", &p[i]);//key-vertex
-		dp[p[i]][1<<(i - 1)] = 0;
+	    scanf("%d", &p[i]);//key-vertex
+        dp[p[i]][1<<(i - 1)] = 0;
 	}
 	for (int s = 1; s < (1<<k); s++) {
-		for (int i = 1; i <= n; i++) {
-			for (int subs = s&(s-1); subs; subs=s&(subs-1)) {
-				dp[i][s]=min(dp[i][s], dp[i][subs] + dp[i][s^subs]);
-			}
-			if (dp[i][s]!=0x3f3f3f3f) {
+	    for (int i = 1; i <= n; i++) {
+	        for (int subs = s&(s-1); subs; subs=s&(subs-1)) {
+	            dp[i][s]=min(dp[i][s], dp[i][subs] + dp[i][s^subs]);
+	        }
+	        if (dp[i][s]!=0x3f3f3f3f) {
                 q.push({-dp[i][s],i});
             }
-		}
-		dijkstra(s);
+	    }
+        dijkstra(s);
 	}
 	printf("%d\n",dp[p[1]][(1<<k)-1]);
 	return 0;

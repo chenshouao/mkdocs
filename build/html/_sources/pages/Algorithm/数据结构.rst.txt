@@ -12,6 +12,7 @@
    ds/scanline.md
    ds/SegmentTreeBeats.md
    ds/01trie.md
+   ds/trie_plus.md
    ds/block.md
    ds/norm_Mo.md
    ds/dynamicTree.md

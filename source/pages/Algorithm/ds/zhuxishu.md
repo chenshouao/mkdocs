@@ -75,8 +75,7 @@ void init(){//离散化
     }
 }
 
-int main()
-{
+int main() {
     scanf("%d%d",&n, &m);
     for(int i = 1; i <= n; ++i){
         scanf("%d", &a[i]);

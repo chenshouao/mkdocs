@@ -96,6 +96,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scanline.html">扫描线</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SegmentTreeBeats.html">吉老师线段树</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01trie.html">01Trie树</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trie_plus.html">可持久化Trie树</a></li>
 <li class="toctree-l3"><a class="reference internal" href="block.html">分块</a></li>
 <li class="toctree-l3"><a class="reference internal" href="norm_Mo.html">普通莫队</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dynamicTree.html">动态开点线段树</a></li>
@@ -183,7 +184,7 @@
 <h1>ST表<a class="headerlink" href="#st" title="永久链接至标题">¶</a></h1>
 <p>维护满足可重复覆盖性质的操作opt。(可重复覆盖性质即opt(x, x) = x)</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1000005</span><span class="p">];</span>
-<span class="kt">int</span> <span class="n">st</span><span class="p">[</span><span class="mi">1000005</span><span class="p">][</span><span class="mi">22</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">st</span><span class="p">[</span><span class="mi">22</span><span class="p">][</span><span class="mi">1000005</span><span class="p">];</span><span class="c1">//The most cache-friendly version</span>
 <span class="kt">int</span> <span class="n">lg</span><span class="p">[</span><span class="mi">1000005</span><span class="p">];</span>
 <span class="kt">bool</span> <span class="n">lg_initial</span><span class="p">;</span>
 <span class="kt">void</span> <span class="nf">init_lg</span><span class="p">(){</span>
@@ -197,17 +198,17 @@
         <span class="n">init_lg</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">j</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">j</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">st</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);</span>            	
+            <span class="n">st</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">st</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))]);</span>            
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="kt">int</span> <span class="nf">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span> <span class="kt">int</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">lg</span><span class="p">[</span><span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-    <span class="k">return</span> <span class="n">opt</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">len</span><span class="p">],</span> <span class="n">st</span><span class="p">[</span><span class="n">r</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">len</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">len</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="n">opt</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">len</span><span class="p">][</span><span class="n">l</span><span class="p">],</span> <span class="n">st</span><span class="p">[</span><span class="n">len</span><span class="p">][</span><span class="n">r</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">len</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
 <span class="p">}</span>
 </pre></div>
 </div>

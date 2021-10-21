@@ -4,7 +4,7 @@
 
 ```cpp
 int nums[1000005];
-int st[1000005][22];
+int st[22][1000005];//The most cache-friendly version
 int lg[1000005];
 bool lg_initial;
 void init_lg(){
@@ -18,16 +18,16 @@ void init() {
         init_lg();
     }
     for (int i = 1; i <= n; ++i) {
-        st[i][0] = nums[i];
+        st[0][i] = nums[i];
     }
     for (int j = 1; (1<<j) <= n; ++j) {
         for (int i = 1; i + (1<<j) - 1 <= n; ++i) {
-            st[i][j] = opt(st[i][j - 1], st[i + (1<<(j - 1))][j - 1]);            	
+            st[j][i] = opt(st[j - 1][i], st[j - 1][i + (1<<(j - 1))]);            
         }
     }
 }
 int query(int l, int r) {
     int len = lg[r - l + 1];
-    return opt(st[l][len], st[r - (1<<len) + 1][len]);
+    return opt(st[len][l], st[len][r - (1<<len) + 1]);
 }
 ```
